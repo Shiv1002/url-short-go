@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Go URL Shortener</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            max-width: 800px;
+            margin: 40px auto;
+            padding: 20px;
+            line-height: 1.6;
+        }
+
+        h1 {
+            color: #2d3748;
+        }
+
+        form {
+            background: #f7fafc;
+            padding: 20px;
+            border-radius: 8px;
+            border: 1px solid #edf2f7;
+        }
+
+        input[type="url"] {
+            width: 70%;
+            padding: 10px;
+            border: 1px solid #cbd5e0;
+            border-radius: 4px;
+        }
+
+        button {
+            padding: 10px 20px;
+            background: #4299e1;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #3182ce;
+        }
+
+        table {
+            width: 100%;
+            margin-top: 20px;
+            border-collapse: collapse;
+        }
+
+        th {
+            background: #edf2f7;
+            text-align: left;
+        }
+
+        td,
+        th {
+            border: 1px solid #e2e8f0;
+            padding: 12px;
+        }
+        
+        .copy-btn {
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            /* Makes it round */
+            border: 1px solid #cbd5e0;
+            background-color: white;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+            font-size: 14px;
+        }
+
+        .copy-btn:hover {
+            background-color: #edf2f7;
+            transform: scale(1.1);
+            /* Slight pop effect */
+        }
+
+        .copy-btn:active {
+            background-color: #cbd5e0;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Shorten a URL</h1>
+    <form action="/shorten" method="POST">
+        <input type="url" name="long_url" placeholder="https://example.com" required>
+        <button type="submit">Shorten</button>
+    </form>
+
+    <hr>
+    <h2>Your Links</h2>
+    <table>
+        <tr>
+            <th>Short Code</th>
+            <th>Original URL</th>
+            <th>Created At</th>
+
+        </tr>
+        {{ range .urls }}
+        <tr>
+            <td style="display: flex;align-items: center;">
+                <a style="margin-right:10px;" href="/get/{{ .Code }}">{{ .Code }}</a>
+                <button class="copy-btn" onclick="copyToClipboard('{{ .Code }}')">
+                    📋
+                </button>
+            </td>
+            <td>{{ .Original }}</td>
+            <td>{{ .CreatedAt.Format "Jan 02, 2006" }}</td>
+        </tr>
+        {{ end }}
+    </table>
+</body>
+<script>
+    function copyToClipboard(code) {
+        // 1. Get the current domain (e.g., http://localhost:8080)
+        const domain = window.location.origin;
+        const fullUrl = domain + "/get/" + code;
+
+        // 2. Use the modern Clipboard API
+        navigator.clipboard.writeText(fullUrl).then(() => {
+            // Optional: Visual feedback
+            alert("Copied: " + fullUrl);
+        }).catch(err => {
+            console.error('Error copying to clipboard', err);
+        });
+    }
+</script>
+
+</html>

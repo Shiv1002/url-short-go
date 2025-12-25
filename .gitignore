@@ -1,1 +1,40 @@
+# --- Binaries and Executables ---
+# Ignore the main app binary (compiled via 'go build')
 app
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+
+# If you name your binary based on the folder, ignore it specifically
+# or use a generic pattern for any file without an extension (Linux/Mac)
+bin/
+
+# --- Dependency Management ---
+# Most people DON'T ignore vendor/, but if you don't want to commit 
+# your dependencies, uncomment the line below.
+# vendor/
+
+# --- Environment and Secrets ---
+.env
+.env.local
+*.secret
+
+# --- Database (SQLite) ---
+# Since you are using SQLite, prevent your local data from being committed
+*.db
+*.db-journal
+*.db-shm
+*.db-wal
+
+# --- Hot Reloading (Air) ---
+# Ignore the temporary build folder created by Air
+tmp/
+.air.toml
+
+# --- IDE and System Files ---
+.vscode/
+.idea/
+*.swp
+.DS_Store
